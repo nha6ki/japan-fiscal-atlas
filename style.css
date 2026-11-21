@@ -338,3 +338,22 @@ body[data-view="home"] main {max-width:1080px;padding-top:clamp(2rem,5vw,4rem)}
   .comparison tbody:not(:last-child) {margin-bottom:1rem}
   .comparison tbody:not(:last-child) tr:last-child > * {padding-bottom:.18rem}
 }
+
+.comparison tbody .domain-plan td {
+  padding:.65rem .8rem;
+  background:#f3f6f7;
+  color:var(--ink);
+  font-size:.9rem;
+}
+.plan-content {
+  display:grid;
+  grid-template-columns:max-content minmax(0,1fr);
+  gap:.3rem 1rem;
+}
+.plan-content strong {color:#354f61}
+@media(max-width:720px) {
+  .comparison .domain-plan {padding:0;border:0}
+  .comparison tbody .domain-plan td {display:block}
+  .comparison .domain-plan td::before {content:none}
+  .plan-content {grid-template-columns:minmax(0,1fr)}
+}

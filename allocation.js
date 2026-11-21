@@ -24,7 +24,7 @@ async function showAllocation() {
     const x = 94+63*i;
     return [1,2].map(j=>{
       const gain = r.gains[j];
-      return `<rect x="${x+(j===1?-18:1)}" y="${Math.min(axis(0),axis(gain))}" width="16" height="${Math.abs(gain)/47}" fill="${j===1?'#647f92':'#126961'}"><title>${r.year}年度 ${methods[j]} ${signed(gain)}億円</title></rect>`;
+      return `<rect x="${x+(j===1?-18:1)}" y="${Math.min(axis(0),axis(gain))}" width="16" height="${Math.abs(gain)/47}" fill="${j===1?'var(--mean)':'var(--regression)'}"><title>${r.year}年度 ${methods[j]} ${signed(gain)}億円</title></rect>`;
     }).join('')+`<text x="${x}" y="234" text-anchor="middle">${r.year}</text>`;
   }).join('');
   const scores = data.summary.map((s,i)=>[methods[i],amount(s.median),amount(s.mean),i?s.wins+'／'+results.length:'基準']);
@@ -37,13 +37,13 @@ async function showAllocation() {
     const links = r.availability.sources.map(s => `<a href="${s.url}">${s.title}</a>`);
     return [r.year, amount(r.actual), r.availability.documentDate, first.date, links.join(' ／ ')];
   });
-  app.innerHTML = `<small>分野 04 ／ 政策支出と地方移転</small><h1>地方交付税の年度予測</h1>
-    <p>国の当初予算が成立した日に、その年度に全国の自治体に交付される普通交付税と特別交付税の合計を予測します。比較の基準は地方財政計画の当初額（自治体が受け取る額。出口ベース）です。震災復興特別交付税は別枠として除いています。</p>
-    <section class="panel"><h2>当初計画より何億円、交付実績に近づいたか</h2>
+  app.innerHTML = `<small>分野 04 ／ 政策支出と地方への移転</small><h1>地方交付税の年度予測</h1>
+    <p>国の当初予算が成立した日に、その年度に全国の自治体に交付される普通交付税と特別交付税の合計を予測します。比較の基準は地方財政計画の当初額（自治体が受け取る額を示す「出口ベース」）です。震災復興特別交付税は別枠として除いています。</p>
+    <section class="panel"><h2>当初計画と比べた予測誤差の変化（億円）</h2>
     <p>棒がゼロ線より上なら誤差が縮小し、下なら拡大しました。2020年度は当初計画と実績が億円単位で一致しました。2025年度には実績が当初計画を約1.31兆円上回り、前年比回帰によって誤差が約0.52兆円縮まりました。</p>
-    <p><span style="color:#526b7c">■ 平均ずれ率補正</span>　<span style="color:#126961">■ 計画額の前年比回帰</span>　単位：億円</p>
+    <p><span class="chart-key mean">平均ずれ率補正</span>　<span class="chart-key regression">計画額の前年比回帰</span>　単位：億円</p>
     <div class="jra-scroll"><div class="jra-plot"><svg viewBox="0 0 905 249" role="img" aria-label="2013〜2025年度の絶対誤差改善額。年度別の数値は下表に掲載。">${grid}${bars}</svg></div></div>
-    <h3>2013〜2025年度の検証結果（億円）</h3>${table(['方式','絶対誤差の中央値','絶対誤差の平均','当初計画より改善'],scores)}
+    <h3>2013〜2025年度の検証結果（億円）</h3>${table(['方式','絶対誤差の中央値','平均絶対誤差','改善した年度数'],scores)}
     <p>計画額の前年比を使う回帰は、絶対誤差の中央値・平均ともに3方式で最小でした。平均ずれ率補正は、大幅に上振れした年度の誤差を抑えて平均を改善する一方、中央値は当初計画を上回りました。</p></section>
     <section class="panel"><h2>3方式の入力と計算方法</h2>
     <h3>① 当初計画額</h3><p>地方財政計画の「地方交付税の総額（通常収支分）」を予測額にします。国の一般会計から特別会計への繰入額とは区別します。</p>
@@ -52,7 +52,7 @@ async function showAllocation() {
     <section class="panel"><h2>年度別の予測額と交付実績（億円）</h2>
     ${table(['年度',...methods,'実績','平均ずれ率の改善額','回帰の改善額'],forecasts)}
     <p>計画額と実績を億円に統一してから計算し、予測と改善額は最後に丸めています。2025年度の実績は、再算定後の普通交付税の都道府県分・市町村分と年間の特別交付税を、公表された億円単位で合算した概算です。</p></section>
-    <section class="panel"><h2>各予測に使った期間</h2>
+    <section class="panel"><h2>予測基準日と学習に使った10年度</h2>
     <p>2002〜2025年度の24件を収集しました。予測年度の11年前から2年前までの10件を使います。最初の2013年度予測の学習期間は2002〜2011年度です。2001年度の計画額は2002年度の前年比の計算にだけ使います。</p>
     ${table(['予測年度','国の当初予算成立日','学習年度','計画額の前年比'],training)}</section>
     <section class="panel"><h2>原資料と検証データ</h2>

@@ -357,3 +357,35 @@ body[data-view="home"] main {max-width:1080px;padding-top:clamp(2rem,5vw,4rem)}
   .comparison .domain-plan td::before {content:none}
   .plan-content {grid-template-columns:minmax(0,1fr)}
 }
+
+#app h1[tabindex="-1"]:focus {outline:none}
+.atlas-entry-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1rem;
+}
+.atlas-entry-grid a {
+  display:block;
+  padding:1.15rem 1.25rem;
+  border:1px solid var(--rule);
+  border-top:3px solid var(--blue);
+  background:#fff;
+  text-decoration:none;
+}
+.atlas-entry-grid a:hover strong {text-decoration:underline;text-underline-offset:.25em}
+.atlas-entry-grid strong {
+  display:block;
+  font:700 clamp(1.16rem,2vw,1.45rem)/1.5 var(--display);
+}
+.atlas-entry-grid span {display:block;margin-top:.45rem;color:var(--ink)}
+body[data-view="annual"] main,body[data-view="outlook"] main {max-width:1080px}
+.outlook-table {border-collapse:collapse;width:100%;max-width:48rem;font-variant-numeric:tabular-nums}
+.outlook-table caption {text-align:left;color:var(--muted);font-size:.92rem;padding-bottom:.35rem}
+.outlook-table th,.outlook-table td {padding:.55rem .6rem;white-space:normal}
+.outlook-table td {white-space:nowrap}
+.outlook-table .outlook-metric th {background:#f0f4f2}
+@media(max-width:620px) {
+  .atlas-entry-grid {grid-template-columns:1fr}
+  .outlook-table {font-size:.875rem}
+  .outlook-table th,.outlook-table td {padding:.45rem .25rem}
+}

@@ -102,6 +102,20 @@ const forecastDomains = [
 
 const publishedStudies = forecastDomains.flatMap(domain => domain.studies);
 function showHome() {
+  app.innerHTML = `<section class="home-summary">
+    <div class="atlas-opening"><h1>日本財政アトラス</h1>
+      <p>日本の財政を、過去の予測の検証と今後の見通しから見る。</p>
+    </div>
+    <nav class="atlas-entry-grid" aria-label="分析を選ぶ">
+      <a href="#domains"><strong>分野別の年度予測</strong>
+        <span>当初予算・計画を補正すると誤差が縮まるか、8分野の検証結果を比較します。</span></a>
+      <a href="#outlook"><strong>財政の中期見通し</strong>
+        <span>税収と利払費の2027〜2029年度の試算と、1〜3年度先の予測誤差を確認します。</span></a>
+    </nav>
+  </section>`;
+}
+
+function showAnnual() {
   const score = (wins, total, method) => `<span class="score-line ${method}"><span class="score-track" aria-hidden="true"><i style="width:${100 * wins / total}%"></i></span><b>${wins}／${total}</b></span>`;
   const groups = forecastDomains.map(domain => {
     const rows = domain.studies.map(study => `
@@ -115,9 +129,8 @@ function showHome() {
       </div></td></tr></tbody>`;
   }).join('');
   app.innerHTML = `<section class="home-summary">
-    <div class="atlas-opening"><h1>日本財政アトラス</h1>
-    <p>予算成立時点の情報で、年度の実績をどこまで見通せるか。国の収入・支出・融資について、過去のずれや経済指標で当初予算・計画を補正した結果を比較します。</p></div>
-    <h2 id="domains">分野別の年度予測</h2>
+    <h1>分野別の年度予測</h1>
+    <p>予算成立時点の情報で、年度の実績をどこまで見通せるか。国の収入・支出・融資について、過去のずれや経済指標で当初予算・計画を補正した結果を比較します。</p>
     <table class="home-scores comparison"><caption>国庫の資金の動きをもとに、本サイト独自の8分野に整理しました。公開済みの予測対象を選ぶと、年度別の結果と出典を確認できます。数値は「当初予算・計画より誤差が小さかった年度数／検証年度数」、棒の長さはその割合です。「予定」は今後検討する年度予測の対象です。</caption>
     <thead><tr><th scope="col">分野・予測対象</th><th scope="col">検証期間・比較基準</th><th scope="col">平均ずれ率補正</th><th scope="col">回帰・使用した指標</th></tr></thead>${groups}</table>
     <p class="home-note">法人税収では名目GDP連動も比較し、12年度中6年度で改善しました。財政融資額の実績には、資金年度ベースの決算時点の見込値を用いています。</p>

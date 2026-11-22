@@ -48,21 +48,33 @@ function addStudyNavigation() {
   app.append(back);
 }
 
-async function navigate() {
+async function navigate(event) {
   overflowObserver.disconnect();
   const route = location.hash;
   const study = publishedStudies.find(target => target.route === route);
-  document.querySelector('body > header').hidden = !study;
-  document.body.dataset.view = study ? 'study' : 'home';
-  document.title = study ? study.name + 'の年度予測｜日本財政アトラス'
-    : '日本財政アトラス';
+  const page = ['#annual', '#topics', '#domains'].includes(route) ? 'annual'
+    : route === '#outlook' ? 'outlook' : 'home';
+  document.querySelector('body > header').hidden = !study && page === 'home';
+  document.body.dataset.view = study ? 'study' : page;
   if (study) {
     await study.render();
     if (location.hash !== route) return;
     addStudyNavigation();
-  } else showHome();
-  if (['#annual', '#topics', '#domains'].includes(route)) document.getElementById('domains').scrollIntoView();
-  else window.scrollTo(0, 0);
+  } else if (page === 'annual') {
+    showAnnual();
+  } else if (page === 'outlook') {
+    showOutlook();
+  } else {
+    showHome();
+  }
+  const heading = app.querySelector('h1');
+  document.title = page === 'home' && !study ? '日本財政アトラス'
+    : heading.textContent + '｜日本財政アトラス';
+  if (event && !study) {
+    heading.tabIndex = -1;
+    heading.focus({preventScroll: true});
+  }
+  window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', navigate);
 navigate();
